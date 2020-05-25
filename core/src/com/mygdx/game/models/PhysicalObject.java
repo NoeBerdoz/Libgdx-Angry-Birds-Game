@@ -11,4 +11,9 @@ public class PhysicalObject extends Sprite {
         setBounds(position.x, position.y, width, height);
     }
 
+    public Vector2 getPosition()
+    {
+        return new Vector2(getX(), getY());
+    }
+
 }

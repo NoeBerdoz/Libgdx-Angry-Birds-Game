@@ -20,6 +20,8 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	public static final int WORLD_WIDTH = 1600;
 	public static final int WORLD_HEIGHT = 900;
+	public static final int FLOOR_HEIGHT = 120;
+
 
 	public static final int TWEETY_START_X = 100;
 	public static final int TWEETY_START_Y = 200;
@@ -44,6 +46,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void update() {
 		float dt = Gdx.graphics.getDeltaTime();
 		waspy.accelerate(dt);
+		waspy.move(dt);
 	}
 
 
