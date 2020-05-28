@@ -16,14 +16,27 @@ public final class Bird extends MovingObject {
     public Bird() {
         super(new Vector2(MyGdxGame.TWEETY_START_X, MyGdxGame.TWEETY_START_Y), WIDTH, HEIGHT, PICNAME, new Vector2(0,0));
     }
-    /* TO IMPLEMENT LATER
+
+    @Override
     public void unFreeze() {
         super.unFreeze();
         state = BirdState.fly;
     }
-    */
 
+    @Override
     public void accelerate(float dt) {
+
+        if (state == BirdState.fly) speed.y -= MovingObject.G * dt;
+    }
+
+    public void reset() {
+        setX(MyGdxGame.TWEETY_START_X);
+        setY(MyGdxGame.TWEETY_START_Y);
+        freeze();
+    }
+
+    public void aim(float x, float y)
+    {
 
     }
 }
