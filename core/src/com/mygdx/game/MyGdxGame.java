@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,9 @@ import com.mygdx.game.models.Wasp;
 
 import com.badlogic.gdx.InputProcessor;
 import javafx.scene.input.TouchPoint;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 import java.util.Random;
 
@@ -31,13 +35,24 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 	public static final int TWEETY_START_X = 100;
 	public static final int TWEETY_START_Y = 200;
 
+	private static final float ELASTICITY = 6f;
+
 	private Texture background;
 
 	private Bird tweety;
 	private Wasp waspy;
 
+	/*private Queue<Touch> actions; ENLEVER*/
+	protected OrthographicCamera camera;
+
+
 	@Override
 	public void create () {
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT); // Make orthogonal matrice
+		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); // Place on the middle
+		camera.update();
+
 		alea = new Random();
 
 		background = new Texture(Gdx.files.internal("background.jpg"));
@@ -46,6 +61,11 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 
 		tweety = new Bird();
 		waspy = new Wasp(new Vector2(WORLD_WIDTH / 2, WORLD_HEIGHT / 2), new Vector2(20, 20));
+
+		// DIOGO DIT DE ENLVER actions = new LinkedList<Touch>();
+
+		Gdx.input.setInputProcessor(this); // Initialize tactile input
+
 	}
 
 	public void update() {
@@ -57,12 +77,15 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 
 		waspy.accelerate(dt);
 		waspy.move(dt);
+
+		tweety.fly(dt);
 	}
 
 
 
 	@Override
 	public void render () {
+
 		Gdx.gl.glClearColor(1, 0, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
@@ -89,17 +112,32 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 	}
 
 	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) { // S'active quand le tactile est appuyé
+		Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0));
 		return false;
 	}
 
 	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) { // S'active quand le tactile est relevé
+		/* OLD VERSION
+		Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0));
+		tweety.setPosition(pointTouched.x, pointTouched.y);*/
+		tweety.fire();
 		return false;
 	}
 
 	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
+	public boolean touchDragged(int screenX, int screenY, int pointer) { // S'active lors du maintient du tactile + déplacement
+		/* OLD VERSION
+		Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0)); // Inversion des coordonnées par rapport à la caméra
+		tweety.setPosition(pointTouched.x, pointTouched.y);*/
+		// Doc intéressante pour le drag balistique : https://stackoverflow.com/questions/10401644/mousejointdef-libgdx-draw-a-trajectory-line-like-angry-birds
+
+		if(!tweety.getMoving()) { // Test si il peut bouger ou pas
+			tweety.setPosition(tweety.getX() + Gdx.input.getDeltaX(), tweety.getY() - Gdx.input.getDeltaY());
+
+		}
+
 		return false;
 	}
 

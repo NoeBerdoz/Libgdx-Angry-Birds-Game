@@ -39,4 +39,8 @@ abstract class MovingObject extends PhysicalObject {
         speed.y = 0;
     }
 
+    public void setSpeed(Vector2 speed) {
+        this.speed = speed;
+    }
+
 }
