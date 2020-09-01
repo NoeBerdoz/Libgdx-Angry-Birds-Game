@@ -9,8 +9,8 @@ public final class Bird extends MovingObject {
 
     private static final String PICNAME = "bird.png";
 
-    public static final int WIDTH = 60;
-    public final static int HEIGHT = 60;
+    public static final int WIDTH = 100;
+    public final static int HEIGHT = 100;
 
     public float angle; // Balistic angle
     public float v0; // Speed physics

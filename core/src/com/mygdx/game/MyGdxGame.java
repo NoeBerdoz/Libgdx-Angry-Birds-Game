@@ -10,12 +10,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.models.Bird;
 import com.mygdx.game.models.PhysicalObject;
+import com.mygdx.game.models.Tnt;
 import com.mygdx.game.models.Wasp;
-
+import com.mygdx.game.models.Pig;
 import com.badlogic.gdx.InputProcessor;
-import javafx.scene.input.TouchPoint;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Queue;
 
 import java.util.Random;
@@ -45,6 +45,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 	/*private Queue<Touch> actions; ENLEVER*/
 	protected OrthographicCamera camera;
 
+	// Scene implementation
+	private ArrayList<PhysicalObject> scene;
 
 	@Override
 	public void create () {
@@ -62,9 +64,22 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 		tweety = new Bird();
 		waspy = new Wasp(new Vector2(WORLD_WIDTH / 2, WORLD_HEIGHT / 2), new Vector2(20, 20));
 
-		// DIOGO DIT DE ENLVER actions = new LinkedList<Touch>();
-
 		Gdx.input.setInputProcessor(this); // Initialize tactile input
+
+		// Initialize arraylist
+		scene = new ArrayList<PhysicalObject>();
+
+		// Fill ArrayList
+
+		// TNTS
+		scene.add(new Tnt(new Vector2(400, 200)));
+		scene.add(new Tnt(new Vector2(500, 200)));
+		scene.add(new Tnt(new Vector2(500, 280)));
+		scene.add(new Tnt(new Vector2(500, 350)));
+
+		// PIGS
+		scene.add(new Pig(new Vector2(400,290)));
+
 
 	}
 
@@ -93,6 +108,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 		batch.draw(background, 0, 0);
 		tweety.draw(batch);
 		waspy.draw(batch);
+		for(int i = 0; i < scene.size(); i++){
+			scene.get(i).draw(batch);
+		}
 		batch.end();
 	}
 

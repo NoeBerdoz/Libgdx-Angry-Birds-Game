@@ -8,8 +8,8 @@ public class Wasp extends MovingObject {
 
     private static final int AGITATION = 15; // How fastly speed changes
     private static final String PICNAME = "wasp.png";
-    private static final int WIDTH = 60;
-    private static final int HEIGHT = 60;
+    private static final int WIDTH = 100;
+    private static final int HEIGHT = 100;
 
     public Wasp(Vector2 position, Vector2 speed) { super(position, WIDTH, HEIGHT, PICNAME, speed); }
 
