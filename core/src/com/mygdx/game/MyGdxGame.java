@@ -8,11 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.models.Bird;
-import com.mygdx.game.models.PhysicalObject;
-import com.mygdx.game.models.Tnt;
-import com.mygdx.game.models.Wasp;
-import com.mygdx.game.models.Pig;
+import com.mygdx.game.models.*;
 import com.badlogic.gdx.InputProcessor;
 
 import java.util.ArrayList;
@@ -45,8 +41,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 	/*private Queue<Touch> actions; ENLEVER*/
 	protected OrthographicCamera camera;
 
-	// Scene implementation
-	private ArrayList<PhysicalObject> scene;
+	private Scenery scenery;
 
 	@Override
 	public void create () {
@@ -67,18 +62,25 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 		Gdx.input.setInputProcessor(this); // Initialize tactile input
 
 		// Initialize arraylist
-		scene = new ArrayList<PhysicalObject>();
+		scenery = new Scenery();
+
 
 		// Fill ArrayList
 
 		// TNTS
-		scene.add(new Tnt(new Vector2(400, 200)));
-		scene.add(new Tnt(new Vector2(500, 200)));
-		scene.add(new Tnt(new Vector2(500, 280)));
-		scene.add(new Tnt(new Vector2(500, 350)));
+		scenery.add(new Tnt(new Vector2(400, 200)));
+		scenery.add(new Tnt(new Vector2(500, 200)));
+		scenery.add(new Tnt(new Vector2(500, 280)));
+		scenery.add(new Tnt(new Vector2(500, 350)));
 
 		// PIGS
-		scene.add(new Pig(new Vector2(400,290)));
+		scenery.add(new Pig(new Vector2(400,290)));
+
+		// BLOCKS
+		// Creating 10 blocks
+		for (int x=600; x<=1500; x = x+100) {
+			scenery.add(new PhysicalObject(new Vector2(x, 200),100,100,"block.png"));
+		}
 
 
 	}
@@ -108,9 +110,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 		batch.draw(background, 0, 0);
 		tweety.draw(batch);
 		waspy.draw(batch);
-		for(int i = 0; i < scene.size(); i++){
-			scene.get(i).draw(batch);
-		}
+		scenery.draw(batch);
 		batch.end();
 	}
 
@@ -137,18 +137,12 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) { // S'active quand le tactile est relevé
-		/* OLD VERSION
-		Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0));
-		tweety.setPosition(pointTouched.x, pointTouched.y);*/
 		tweety.fire();
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) { // S'active lors du maintient du tactile + déplacement
-		/* OLD VERSION
-		Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0)); // Inversion des coordonnées par rapport à la caméra
-		tweety.setPosition(pointTouched.x, pointTouched.y);*/
 		// Doc intéressante pour le drag balistique : https://stackoverflow.com/questions/10401644/mousejointdef-libgdx-draw-a-trajectory-line-like-angry-birds
 
 		if(!tweety.getMoving()) { // Test si il peut bouger ou pas
