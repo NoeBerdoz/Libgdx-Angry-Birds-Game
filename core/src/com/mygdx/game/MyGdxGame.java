@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.data.Vocabulary;
 import com.mygdx.game.models.*;
 import com.badlogic.gdx.InputProcessor;
+import com.mygdx.game.providers.VocProvider;
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -43,6 +45,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 
 	private Scenery scenery;
 
+	private VocProvider vocSource = VocProvider.getInstance();
+	private Vocabulary voc;
+
 	@Override
 	public void create () {
 		camera = new OrthographicCamera();
@@ -59,13 +64,14 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 		tweety = new Bird();
 		waspy = new Wasp(new Vector2(WORLD_WIDTH / 2, WORLD_HEIGHT / 2), new Vector2(20, 20));
 
+
 		Gdx.input.setInputProcessor(this); // Initialize tactile input
+
+		// VOCABULARY
+		voc = vocSource.pickAVoc();
 
 		// Initialize arraylist
 		scenery = new Scenery();
-
-
-		// Fill ArrayList
 
 		// TNTS
 		scenery.add(new Tnt(new Vector2(400, 200)));
@@ -74,14 +80,13 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 		scenery.add(new Tnt(new Vector2(500, 350)));
 
 		// PIGS
-		scenery.add(new Pig(new Vector2(400,290)));
+		scenery.add(new Pig(new Vector2(400,290), voc.pickAWord().getValue1()));
 
 		// BLOCKS
 		// Creating 10 blocks
 		for (int x=600; x<=1500; x = x+100) {
 			scenery.add(new PhysicalObject(new Vector2(x, 200),100,100,"block.png"));
 		}
-
 
 	}
 
