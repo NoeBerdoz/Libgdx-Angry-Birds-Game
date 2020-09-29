@@ -1,6 +1,7 @@
 package com.mygdx.game.models;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
@@ -23,5 +24,25 @@ public class Scenery {
         }
     }
 
+    public void handleTouchDown(Vector2 point)
+    {
+        for (PhysicalObject po : scene) {
+            if (po instanceof Pig) {
+                Pig p = (Pig)po;
+                if (p.getBoundingRectangle().contains(point)) {
+                    p.sayWord();
+                }
+            }
+        }
+    }
+
+    public void handleTouchUp(Vector2 point)
+    {
+        for (PhysicalObject po: scene) {
+            if (po instanceof Pig) {
+                ((Pig)po).shutUp();
+            }
+        }
+    }
 
 }

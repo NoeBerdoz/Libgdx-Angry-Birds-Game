@@ -136,13 +136,18 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) { // S'active quand le tactile est appuyé
-		Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0));
+		Vector3 pt3 = camera.unproject(new Vector3(screenX, screenY, 0));
+		Vector2 pointTouched = new Vector2(pt3.x, pt3.y);
+		scenery.handleTouchDown(pointTouched);
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) { // S'active quand le tactile est relevé
 		tweety.fire();
+		Vector3 pt3 = camera.unproject(new Vector3(screenX, screenY, 0));
+		Vector2 pointTouched = new Vector2(pt3.x, pt3.y);
+		scenery.handleTouchUp(pointTouched);
 		return false;
 	}
 
