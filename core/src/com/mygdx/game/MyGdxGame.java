@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.data.Vocabulary;
+import com.mygdx.game.data.Word;
 import com.mygdx.game.models.*;
 import com.badlogic.gdx.InputProcessor;
 import com.mygdx.game.providers.VocProvider;
@@ -47,6 +48,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 
 	private VocProvider vocSource = VocProvider.getInstance();
 	private Vocabulary voc;
+	private Panel guess;
 
 	@Override
 	public void create () {
@@ -80,14 +82,16 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 		scenery.add(new Tnt(new Vector2(500, 350)));
 
 		// PIGS
-		scenery.add(new Pig(new Vector2(400,290), voc.pickAWord().getValue1()));
+		scenery.add(new Pig(new Vector2(400,290), voc.pickAWord()));
 
 		// BLOCKS
 		// Creating 10 blocks
 		for (int x=600; x<=1500; x = x+100) {
 			scenery.add(new PhysicalObject(new Vector2(x, 200),100,100,"block.png"));
 		}
-
+		guess = new Panel(scenery.pickAWord());
+		// Example log :
+		Gdx.app.log("ANGRY",guess.toString());
 	}
 
 	public void update() {
@@ -116,6 +120,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor{
 		tweety.draw(batch);
 		waspy.draw(batch);
 		scenery.draw(batch);
+		guess.draw(batch);
 		batch.end();
 	}
 
